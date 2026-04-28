@@ -278,8 +278,8 @@ make build ARCH=arm64
 ## References
 
 - [Bitcoin Core Official](https://bitcoincore.org/)
-- [Bitcoin Core Documentation](https://bitcoin.org/en/developer-documentation)
-- [UBI 10 Minimal](https://www.redhat.com/en/blog/introducing-ubi10-ubi-micro)
+- [Bitcoin Core Documentation](https://bitcoincore.academy)
+- [UBI 10 Minimal](https://catalog.redhat.com/en/software/containers/ubi10/ubi/66f2b46b122803e4937d11ae)
 
 ## Todo
 
