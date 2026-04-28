@@ -69,7 +69,10 @@ RUN groupadd -g 1001 bitcoin \
 RUN mkdir -p /home/bitcoin/.bitcoin \
     && chown -R 1001:1001 /home/bitcoin/.bitcoin \
     && chmod 700 /home/bitcoin/.bitcoin
- 
+
+# Remove setuid/setgid bits for security hardening
+RUN find /usr -perm /6000 -type f -exec chmod a-s {} +
+
 # Volume for blockchain data
 VOLUME ["/home/bitcoin/.bitcoin"]
  
