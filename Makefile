@@ -46,7 +46,7 @@ build: check-no-change ## Build the Docker image with buildx for multi-arch supp
 		--build-arg ARCH=$(ARCH) \
 		--platform $(PLATFORM) \
 		-t $(FULL_IMAGE_NAME):$(TAG) \
-		--progress=plain --no-cache .
+		.
 
 push: ## Push the image to the registry with both version tag and "latest"
 	$(CONTAINER_RT) tag $(FULL_IMAGE_NAME):$(TAG) $(FULL_IMAGE_NAME):latest
