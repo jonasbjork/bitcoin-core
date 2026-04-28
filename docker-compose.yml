@@ -1,0 +1,23 @@
+services:
+  bitcoind:
+    image: ghcr.io/jonasbjork/bitcoin-core/bitcoin-core:latest
+    container_name: bitcoin-core
+    restart: unless-stopped
+    ports:
+      - "8333:8333"             # P2P-network
+      - "127.0.0.1:8332:8332"   # RPC — localhost only
+    volumes:
+      - bitcoin-data:/home/bitcoin/.bitcoin
+      - ./bitcoin.conf:/home/bitcoin/.bitcoin/bitcoin.conf:ro,Z
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=50M
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+
+volumes:
+  bitcoin-data:
