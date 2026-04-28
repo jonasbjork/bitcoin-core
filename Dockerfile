@@ -9,7 +9,6 @@ ARG ARCH=x86_64
 ARG IMAGE_NAME=bitcoin-core
 ARG TAG=${BITCOIN_VERSION}
 
-ENV BUILD_DEPS="tar-2:1.35-9.el10_1 gzip-1.13-3.el10 gnupg2-2.4.5-4.el10_1 git-core-2.47.3-1.el10_0"
 ENV BITCOIN_TARBALL=bitcoin-${BITCOIN_VERSION}-${ARCH}-linux-gnu.tar.gz
 ENV BITCOIN_URL=https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/${BITCOIN_TARBALL}
 ENV BITCOIN_SUMS_URL=https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERSION}/SHA256SUMS
@@ -18,7 +17,7 @@ ENV BITCOIN_SUMS_ASC_URL=https://bitcoincore.org/bin/bitcoin-core-${BITCOIN_VERS
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN microdnf install -y --setopt=install_weak_deps=0 \
-        ${BUILD_DEPS} \
+        tar-2:1.35-9.el10_1 gzip-1.13-3.el10 gnupg2-2.4.5-4.el10_1 git-core-2.47.3-1.el10_0 \
     && microdnf clean all
 
 RUN set -eux; \
@@ -64,11 +63,11 @@ RUN microdnf install -y --setopt=install_weak_deps=0 shadow-utils-2:4.15.0-10.el
 COPY --from=build /opt/bitcoin /opt/bitcoin
 ENV PATH="/opt/bitcoin/bin:${PATH}"
  
-RUN groupadd -g 1000 bitcoin \
-    && useradd -u 1000 -g bitcoin -m -d /home/bitcoin -s /sbin/nologin bitcoin
+RUN groupadd -g 1001 bitcoin \
+    && useradd -u 1001 -g bitcoin -m -d /home/bitcoin -s /sbin/nologin bitcoin
  
 RUN mkdir -p /home/bitcoin/.bitcoin \
-    && chown -R 1000:1000 /home/bitcoin/.bitcoin \
+    && chown -R 1001:1001 /home/bitcoin/.bitcoin \
     && chmod 700 /home/bitcoin/.bitcoin
  
 # Volume for blockchain data
@@ -77,7 +76,7 @@ VOLUME ["/home/bitcoin/.bitcoin"]
 # P2P and RPC ports
 EXPOSE 8333 8332
  
-USER 1000
+USER 1001
 WORKDIR /home/bitcoin
 HEALTHCHECK --interval=60s --timeout=10s --start-period=120s --retries=3 \
     CMD bitcoin-cli -datadir=/home/bitcoin/.bitcoin getblockchaininfo > /dev/null 2>&1 || exit 1
