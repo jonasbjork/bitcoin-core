@@ -4,7 +4,7 @@ services:
     container_name: bitcoin-core
     restart: unless-stopped
     ports:
-      - "8333:8333"             # P2P-network
+      - "8333:8333"             # P2P network
       - "127.0.0.1:8332:8332"   # RPC — localhost only
     volumes:
       - bitcoin-data:/home/bitcoin/.bitcoin
